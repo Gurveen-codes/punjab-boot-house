@@ -1,6 +1,7 @@
 import express from "express";
 const app = express();
 import dotenv from "dotenv";
+import colors from "colors";
 import connectDB from "./config/db.js";
 
 import products from "./data/products.js";
@@ -26,5 +27,6 @@ app.listen(
   process.env.PORT || 5000,
   console.log(
     `Server running in ${process.env.NODE_ENV} mode on port: ${process.env.PORT}`
+      .rainbow.underline
   )
 );

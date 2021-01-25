@@ -31,7 +31,7 @@ const importData = async () => {
     console.log("Data imported".brightGreen.bold.underline);
     process.exit();
   } catch (error) {
-    console.log(`Error: {error}`.yellow.bold);
+    console.log(`Error: ${error}`.yellow.bold);
     process.exit(1);
   }
 };

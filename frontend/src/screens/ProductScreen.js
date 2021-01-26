@@ -16,7 +16,7 @@ import Message from "../components/Message";
 import { listDetailProduct } from "../actions/productActions";
 
 const ProductScreen = (props) => {
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const productDetail = useSelector((state) => state.productDetail);
   const { loading, product, error } = productDetail;
@@ -24,6 +24,10 @@ const ProductScreen = (props) => {
   useEffect(() => {
     dispatch(listDetailProduct(props.match.params.id));
   }, [props.match.params.id, dispatch]);
+
+  const addToCartHandler = () => {
+    props.history.push(`/cart/${props.match.params.id}?qty=${qty}`);
+  };
 
   return (
     <>
@@ -108,6 +112,7 @@ const ProductScreen = (props) => {
                     <Button
                       type="button"
                       className="btn btn-block"
+                      onClick={addToCartHandler}
                       disabled={product.countInStock === 0}
                     >
                       Add To Cart

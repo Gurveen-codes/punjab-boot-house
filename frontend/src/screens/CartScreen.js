@@ -11,7 +11,7 @@ import {
   Form,
 } from "react-bootstrap";
 import Message from "../components/Message";
-import { addToCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 
 const CartScreen = (props) => {
   const dispatch = useDispatch();
@@ -30,6 +30,14 @@ const CartScreen = (props) => {
       dispatch(addToCart(productId, qty));
     }
   }, [dispatch, productId, qty]);
+
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const checkouthandler = () => {
+    props.history.push("/login?redirect=shipping");
+  };
 
   return (
     <Row>
@@ -75,7 +83,11 @@ const CartScreen = (props) => {
                     </Form.Control>
                   </Col>
                   <Col md={2}>
-                    <Button type="button" variant="warning" onClick={() => {}}>
+                    <Button
+                      type="button"
+                      variant="warning"
+                      onClick={() => removeFromCartHandler(item.product)}
+                    >
                       <i className="fas fa-trash"></i>
                     </Button>
                   </Col>
@@ -104,7 +116,7 @@ const CartScreen = (props) => {
                 type="button"
                 className="btn btn-info btn-block "
                 disabled={cartItems.length === 0}
-                onClick={() => {}}
+                onClick={checkouthandler}
               >
                 Proceed to Checkout
               </Button>

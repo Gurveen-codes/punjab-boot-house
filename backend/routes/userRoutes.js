@@ -1,7 +1,16 @@
 import express from "express";
 const router = express.Router();
-import { authUser, getUserProfile } from "../controllers/userController.js";
+import {
+  authUser,
+  getUserProfile,
+  registerUser,
+} from "../controllers/userController.js";
 import { protectRoute } from "../middleware/authMiddleware.js";
+
+// @desc Register a new user
+// @route /api/users
+// @access Public
+router.route("/").post(registerUser);
 
 // @desc Auth User and get token
 // @route /api/users/login

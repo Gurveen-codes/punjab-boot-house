@@ -67,7 +67,7 @@ const LoginScreen = (props) => {
           New Customer ?
           <Link
             to={redirect ? `/register?redirect=${redirect}` : "/register"}
-            style={{ "margin-left": "0.5rem" }}
+            style={{ marginLeft: "0.5rem" }}
           >
             Register
           </Link>

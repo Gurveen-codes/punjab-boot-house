@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import colors from "colors";
 import dotenv from "dotenv";
+import asyncHandler from "express-async-handler";
 import connectDb from "./config/db.js";
 import users from "./data/users.js";
 import products from "./data/products.js";
@@ -12,7 +13,7 @@ dotenv.config();
 
 connectDb();
 
-const importData = async () => {
+const importData = asyncHandler(async () => {
   try {
     await Order.deleteMany();
     await Product.deleteMany();
@@ -34,8 +35,8 @@ const importData = async () => {
     console.log(`Error: ${error}`.yellow.bold);
     process.exit(1);
   }
-};
-const destroyData = async () => {
+});
+const destroyData = asyncHandler(async () => {
   try {
     await Order.deleteMany();
     await Product.deleteMany();
@@ -47,7 +48,7 @@ const destroyData = async () => {
     console.log(`Error: {error}`.yellow.bold);
     process.exit(1);
   }
-};
+});
 
 if (process.argv[2] === "-d") {
   destroyData();

@@ -102,4 +102,4 @@ const getUserDetails = (id) => async (dispatch, getState) => {
   }
 };
 
-export { loginUser, userLogout, registerUser };
+export { loginUser, userLogout, registerUser, getUserDetails };

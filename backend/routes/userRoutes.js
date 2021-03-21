@@ -27,6 +27,6 @@ router.route("/profile").get(protectRoute, getUserProfile);
 // @desc   Update user's profile
 // @route  PUT /api/users/profile
 // @access Private
-router.route("/profile").post(protectRoute, updateUserProfile);
+router.route("/profile").put(protectRoute, updateUserProfile);
 
 export default router;

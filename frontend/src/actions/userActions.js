@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "../constants/actionTypes.js";
 
-///////////////////Login User/////////////
+// * Login User/////////////
 const loginUser = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.USER_LOGIN_REQUEST });
@@ -32,7 +32,7 @@ const loginUser = (email, password) => async (dispatch) => {
   }
 };
 
-/////////////////Logout///////////////////////
+// *Logout      //////////////////
 const userLogout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch({
@@ -72,7 +72,7 @@ const registerUser = (name, email, password) => async (dispatch) => {
   }
 };
 
-///////////////////Get User Details/////////////
+// * Get User Details ///////////////
 const getUserDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: actionTypes.USER_DETAILS_REQUEST });
@@ -102,4 +102,40 @@ const getUserDetails = (id) => async (dispatch, getState) => {
   }
 };
 
-export { loginUser, userLogout, registerUser, getUserDetails };
+// * Update User Profile ///////////////
+const updateUserProfile = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionTypes.USER_UPDATE_PROFILE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put("/api/users/profile", user, config);
+
+    dispatch({ type: actionTypes.USER_UPDATE_PROFILE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: actionTypes.USER_UPDATE_PROFILE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export {
+  loginUser,
+  userLogout,
+  registerUser,
+  getUserDetails,
+  updateUserProfile,
+};

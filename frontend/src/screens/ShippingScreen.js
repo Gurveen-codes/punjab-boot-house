@@ -2,16 +2,24 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Form, Button } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
+import { saveShippingAddress } from "../actions/cartActions";
 
-const ShippingScreen = () => {
-  // TODO: fetch address from localStorage
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
+const ShippingScreen = ({ history }) => {
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
+
+  const dispatch = useDispatch();
+
+  const [address, setAddress] = useState(shippingAddress.address);
+  const [city, setCity] = useState(shippingAddress.city);
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(saveShippingAddress({ address, city, postalCode }));
+    history.push("/payment");
   };
+
   return (
     <FormContainer>
       <h1>Shipping Address</h1>
@@ -39,7 +47,7 @@ const ShippingScreen = () => {
         <Form.Group controlId="postalCode">
           <Form.Label>Postal Code</Form.Label>
           <Form.Control
-            type="text"
+            type="number"
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
             placeholder="Enter Postal Code"

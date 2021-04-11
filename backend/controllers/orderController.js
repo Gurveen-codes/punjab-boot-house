@@ -1,4 +1,6 @@
-import Order from "../models/orderModel";
+import asyncHandler from "express-async-handler";
+
+import Order from "../models/orderModel.js";
 
 // @desc Add new Order
 // @route POST api/order
@@ -13,7 +15,7 @@ const addNewOrder = asyncHandler(async (req, res) => {
 		totalPrice,
 	} = req.body;
 
-	if (orderItems || orderItems.length === 0) {
+	if (!orderItems || orderItems.length === 0) {
 		res.status(400);
 		throw new Error("Cart is Empty");
 	} else {

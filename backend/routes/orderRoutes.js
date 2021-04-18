@@ -1,5 +1,9 @@
 import express from "express";
-import { addNewOrder, getOrderById } from "../controllers/orderController.js";
+import {
+	addNewOrder,
+	getOrderById,
+	updateOrderToPaid,
+} from "../controllers/orderController.js";
 import { protectRoute } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -15,5 +19,11 @@ router.route("/").post(protectRoute, addNewOrder);
 // @access Private
 
 router.route("/:id").get(protectRoute, getOrderById);
+
+// @desc Update order to paid
+// @route PUT api/order/:id/pay
+// @access Private
+
+router.route("/:id/pay").put(protectRoute, updateOrderToPaid);
 
 export default router;

@@ -3,7 +3,7 @@ import axios from "axios";
 
 const createOrder = (order) => async (dispatch, getState) => {
 	try {
-		dispatch({ type: actionTypes.ORDER_CREATE_REQUEST });
+		dispatch({ type: actionTypes.ORDER_DETAILS_REQUEST });
 
 		const {
 			userLogin: { userInfo },
@@ -35,4 +35,37 @@ const createOrder = (order) => async (dispatch, getState) => {
 	}
 };
 
-export { createOrder };
+//* Get order details /////////////////////////////////////
+
+const getOrderDetails = (id) => async (dispatch, getState) => {
+	try {
+		dispatch({ type: actionTypes.ORDER_CREATE_REQUEST });
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.get(`/api/order/${id}`, config);
+
+		dispatch({
+			type: actionTypes.ORDER_DETAILS_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: actionTypes.ORDER_DETAILS_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+export { createOrder, getOrderDetails };

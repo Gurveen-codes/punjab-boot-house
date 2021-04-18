@@ -1,5 +1,5 @@
 import express from "express";
-import { addNewOrder } from "../controllers/orderController.js";
+import { addNewOrder, getOrderById } from "../controllers/orderController.js";
 import { protectRoute } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -9,5 +9,11 @@ const router = express.Router();
 // @access Private
 
 router.route("/").post(protectRoute, addNewOrder);
+
+// @desc Get order by Id
+// @route GET api/order/:id
+// @access Private
+
+router.route("/:id").get(protectRoute, getOrderById);
 
 export default router;

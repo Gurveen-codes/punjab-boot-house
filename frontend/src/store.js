@@ -52,7 +52,7 @@ const intialState = {
 		shippingAddress: shippingAddressFromStorage,
 		paymentMethod: paymentMethodFromStorage,
 	},
-	userLogin: { userinfo: userInfoFromStorage },
+	userLogin: { userInfo: userInfoFromStorage },
 };
 
 const middleware = [thunk];

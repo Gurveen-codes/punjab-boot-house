@@ -60,7 +60,7 @@ const orderPayReducer = (state = {}, action) => {
 	}
 };
 
-const myOrdersListReducer = (state = { orders: {} }, action) => {
+const myOrdersListReducer = (state = { orders: [] }, action) => {
 	switch (action.type) {
 		case actionTypes.MY_ORDER_LIST_REQUEST:
 			return { loading: true };

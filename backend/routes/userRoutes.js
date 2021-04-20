@@ -1,26 +1,31 @@
 import express from "express";
 const router = express.Router();
 import {
-  authUser,
-  getUserProfile,
-  registerUser,
-  updateUserProfile,
+	authUser,
+	getUserProfile,
+	getUsers,
+	registerUser,
+	updateUserProfile,
 } from "../controllers/userController.js";
-import { protectRoute } from "../middleware/authMiddleware.js";
+import { isAdmin, protectRoute } from "../middleware/authMiddleware.js";
 
 // @desc Register a new user
-// @route /api/users
+// @route POST /api/users
 // @access Public
 router.route("/").post(registerUser);
 
-// @desc Auth User and get token
-// @route /api/users/login
-// @access Public
+// @desc Get all users
+// @route GET /api/users
+// @access Private/Admin
+router.route("/").get(protectRoute, isAdmin, getUsers);
 
+// @desc Auth User and get token
+// @route POST /api/users/login
+// @access Public
 router.post("/login", authUser);
 
 // @desc Get user's profile
-// @route /api/users/profile
+// @route GET /api/users/profile
 // @access Private
 router.route("/profile").get(protectRoute, getUserProfile);
 

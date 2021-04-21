@@ -44,6 +44,9 @@ const userLogout = () => (dispatch) => {
 	dispatch({
 		type: actionTypes.USER_DETAILS_RESET,
 	});
+	dispatch({
+		type: actionTypes.USER_LIST_RESET,
+	});
 };
 
 //* Register User/////////////

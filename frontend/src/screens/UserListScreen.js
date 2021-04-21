@@ -6,15 +6,23 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listAllUsers } from "../actions/userActions";
 
-const UserListScreen = () => {
+const UserListScreen = ({ history }) => {
 	const dispatch = useDispatch();
 
 	const userList = useSelector((state) => state.userList);
 	const { loading, users, error } = userList;
 
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
 	useEffect(() => {
-		dispatch(listAllUsers());
-	}, [dispatch]);
+		//if user is logged in and is an admin
+		if (userInfo && userInfo.isAdmin) {
+			dispatch(listAllUsers());
+		} else {
+			history.push("/");
+		}
+	}, [dispatch, userInfo, history]);
 
 	//* User Delete Handler
 	const deleteHandler = (userId) => {
@@ -23,6 +31,7 @@ const UserListScreen = () => {
 
 	return (
 		<>
+			<h2>Users</h2>
 			{loading ? (
 				<Loader></Loader>
 			) : error ? (

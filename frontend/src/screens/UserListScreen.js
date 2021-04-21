@@ -4,7 +4,7 @@ import { Button, Table } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { listAllUsers } from "../actions/userActions";
+import { listAllUsers, deleteUser } from "../actions/userActions";
 
 const UserListScreen = ({ history }) => {
 	const dispatch = useDispatch();
@@ -15,6 +15,9 @@ const UserListScreen = ({ history }) => {
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
+	const userDelete = useSelector((state) => state.userDelete);
+	const { success: successDelete } = userDelete;
+
 	useEffect(() => {
 		//if user is logged in and is an admin
 		if (userInfo && userInfo.isAdmin) {
@@ -22,11 +25,13 @@ const UserListScreen = ({ history }) => {
 		} else {
 			history.push("/");
 		}
-	}, [dispatch, userInfo, history]);
+	}, [dispatch, userInfo, history, successDelete]);
 
 	//* User Delete Handler
 	const deleteHandler = (userId) => {
-		console.log("Delete User");
+		if (window.confirm("Are you sure, deleted user can't be reverted")) {
+			dispatch(deleteUser(userId));
+		}
 	};
 
 	return (

@@ -6,7 +6,6 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
-
 import { USER_UPDATE_PROFILE_RESET } from "../constants/actionTypes";
 
 const ProfileScreen = (props) => {
@@ -125,6 +124,7 @@ const ProfileScreen = (props) => {
 								<th>TOTAL</th>
 								<th>PAID</th>
 								<th>DELIVERED</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>

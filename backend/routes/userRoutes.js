@@ -3,9 +3,11 @@ const router = express.Router();
 import {
 	authUser,
 	deleteUser,
+	getUserById,
 	getUserProfile,
 	getUsers,
 	registerUser,
+	updateUserById,
 	updateUserProfile,
 } from "../controllers/userController.js";
 import { isAdmin, protectRoute } from "../middleware/authMiddleware.js";
@@ -39,5 +41,15 @@ router.route("/profile").put(protectRoute, updateUserProfile);
 // @route DELETE /api/users/:id
 // @access Private/Admin
 router.route("/:id").delete(protectRoute, isAdmin, deleteUser);
+
+// @desc Get user by ID
+// @route GET /api/users/:id
+// @access Private/Admin
+router.route("/:id").get(protectRoute, isAdmin, getUserById);
+
+// @desc   Update user by ID
+// @route  PUT /api/users/:id
+// @access Private/Admin
+router.route("/:id").put(protectRoute, isAdmin, updateUserById);
 
 export default router;

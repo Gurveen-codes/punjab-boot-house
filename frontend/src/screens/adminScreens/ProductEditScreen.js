@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -22,7 +23,12 @@ const ProductEditScreen = ({ match, history }) => {
 	const [countInStock, setCountInStock] = useState(0);
 	const [image, setImage] = useState("");
 
+	const [uploading, setUploading] = useState(false);
+
 	const dispatch = useDispatch();
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
 
 	const productDetail = useSelector((state) => state.productDetail);
 	const { loading, error, product } = productDetail;

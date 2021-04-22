@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Table } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
-import { listAllUsers, deleteUser } from "../actions/userActions";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
+import { listAllUsers, deleteUser } from "../../actions/userActions";
 
 const UserListScreen = ({ history }) => {
 	const dispatch = useDispatch();

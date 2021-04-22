@@ -13,8 +13,8 @@ import ShippingScreen from "./screens/ShippingScreen";
 import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
-import UserListScreen from "./screens/UserListScreen";
-import UserEditScreen from "./screens/UserEditScreen";
+import UserListScreen from "./screens/adminScreens/UserListScreen";
+import UserEditScreen from "./screens/adminScreens/UserEditScreen";
 
 const App = () => {
 	return (

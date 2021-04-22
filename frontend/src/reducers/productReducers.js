@@ -54,9 +54,25 @@ const productCreateReducer = (state = {}, action) => {
 	}
 };
 
+const productUpdateReducer = (state = { product: {} }, action) => {
+	switch (action.type) {
+		case actionTypes.PRODUCT_UPDATE_REQUEST:
+			return { loading: true };
+		case actionTypes.PRODUCT_UPDATE_SUCCESS:
+			return { loading: false, success: true, product: action.payload };
+		case actionTypes.PRODUCT_UPDATE_FAIL:
+			return { loading: false, error: action.payload };
+		case actionTypes.PRODUCT_UPDATE_RESET:
+			return { product: {} };
+		default:
+			return state;
+	}
+};
+
 export {
 	productDetailReducer,
 	productListReducer,
 	productDeleteReducer,
 	productCreateReducer,
+	productUpdateReducer,
 };

@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import FormContainer from "../../components/FormContainer";
-import { listDetailProduct } from "../../actions/productActions";
+import { listDetailProduct, updateProduct } from "../../actions/productActions";
+import { PRODUCT_UPDATE_RESET } from "../../constants/actionTypes";
 
 const ProductEditScreen = ({ match, history }) => {
 	const productId = match.params.id;
@@ -23,24 +24,47 @@ const ProductEditScreen = ({ match, history }) => {
 	const productDetail = useSelector((state) => state.productDetail);
 	const { loading, error, product } = productDetail;
 
+	const productUpdate = useSelector((state) => state.productUpdate);
+	const {
+		loading: loadingUpdate,
+		error: errorUpdate,
+		success: successUpdate,
+	} = productUpdate;
+
 	useEffect(() => {
-		if (!product.name || product._id !== productId) {
-			dispatch(listDetailProduct(productId));
+		if (successUpdate) {
+			dispatch({ type: PRODUCT_UPDATE_RESET });
+			history.push(`/admin/productlist`);
 		} else {
-			setName(product.name);
-			setPrice(product.price);
-			setDescription(product.description);
-			setCategory(product.category);
-			setBrand(product.brand);
-			setCountInStock(product.countInStock);
-			setImage(product.image);
+			if (!product.name || product._id !== productId) {
+				dispatch(listDetailProduct(productId));
+			} else {
+				setName(product.name);
+				setPrice(product.price);
+				setDescription(product.description);
+				setCategory(product.category);
+				setBrand(product.brand);
+				setCountInStock(product.countInStock);
+				setImage(product.image);
+			}
 		}
-	}, [dispatch, history, productId, product]);
+	}, [dispatch, history, productId, product, successUpdate]);
 
 	//* Product update handler
 	const submitHandler = (e) => {
 		e.preventDefault();
-		//TODO: Update Product
+		dispatch(
+			updateProduct({
+				_id: productId,
+				name,
+				price,
+				image,
+				brand,
+				category,
+				countInStock,
+				description,
+			})
+		);
 	};
 
 	return (
@@ -51,6 +75,8 @@ const ProductEditScreen = ({ match, history }) => {
 			<FormContainer>
 				<h1>Edit Product</h1>
 
+				{loadingUpdate && <Loader></Loader>}
+				{errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
 				{error && <Message variant="danger">{error}</Message>}
 				{loading && <Loader></Loader>}
 				<Form onSubmit={submitHandler}>
@@ -117,6 +143,8 @@ const ProductEditScreen = ({ match, history }) => {
 					<Form.Group controlId="description">
 						<Form.Label>Description</Form.Label>
 						<Form.Control
+							as="textarea"
+							rows={4}
 							type="text"
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}

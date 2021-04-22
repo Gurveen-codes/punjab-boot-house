@@ -4,7 +4,12 @@ import { Button, Table, Row, Col } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
-import { listProducts, deleteProduct } from "../../actions/productActions";
+import {
+	listProducts,
+	deleteProduct,
+	createProduct,
+} from "../../actions/productActions";
+import { PRODUCT_CREATE_RESET } from "../../constants/actionTypes";
 
 const ProductListScreen = ({ history }) => {
 	const dispatch = useDispatch();
@@ -22,18 +27,39 @@ const ProductListScreen = ({ history }) => {
 		error: errorDelete,
 	} = productDelete;
 
+	const productCreate = useSelector((state) => state.productCreate);
+	const {
+		loading: loadingCreate,
+		success: successCreate,
+		error: errorCreate,
+		product: createdProduct,
+	} = productCreate;
+
 	useEffect(() => {
-		//if user is logged in and is an admin
-		if (userInfo && userInfo.isAdmin) {
-			dispatch(listProducts());
-		} else {
-			history.push("/");
+		dispatch({ type: PRODUCT_CREATE_RESET });
+
+		//if user is not logged in or is not an admin
+		if (!(userInfo && userInfo.isAdmin)) {
+			history.push("/login");
 		}
-	}, [dispatch, userInfo, history, successDelete]);
+
+		if (successCreate) {
+			history.push(`/admin/product/${createdProduct._id}/edit`);
+		} else {
+			dispatch(listProducts());
+		}
+	}, [
+		dispatch,
+		userInfo,
+		history,
+		successDelete,
+		successCreate,
+		createdProduct,
+	]);
 
 	//* Create Product Handler
 	const createProductHandler = () => {
-		//TODO: Create product
+		dispatch(createProduct());
 	};
 
 	//* Product Delete Handler
@@ -58,6 +84,8 @@ const ProductListScreen = ({ history }) => {
 
 			{loadingDelete && <Loader />}
 			{errorDelete && <Message variant="danger">{errorDelete}</Message>}
+			{loadingCreate && <Loader />}
+			{errorCreate && <Message variant="danger">{errorCreate}</Message>}
 			{loading ? (
 				<Loader></Loader>
 			) : error ? (

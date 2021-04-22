@@ -4,7 +4,7 @@ import { Button, Table, Row, Col } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
-import { listProducts } from "../../actions/productActions";
+import { listProducts, deleteProduct } from "../../actions/productActions";
 
 const ProductListScreen = ({ history }) => {
 	const dispatch = useDispatch();
@@ -15,6 +15,13 @@ const ProductListScreen = ({ history }) => {
 	const productList = useSelector((state) => state.productList);
 	const { loading, products, error } = productList;
 
+	const productDelete = useSelector((state) => state.productDelete);
+	const {
+		loading: loadingDelete,
+		success: successDelete,
+		error: errorDelete,
+	} = productDelete;
+
 	useEffect(() => {
 		//if user is logged in and is an admin
 		if (userInfo && userInfo.isAdmin) {
@@ -22,7 +29,7 @@ const ProductListScreen = ({ history }) => {
 		} else {
 			history.push("/");
 		}
-	}, [dispatch, userInfo, history]);
+	}, [dispatch, userInfo, history, successDelete]);
 
 	//* Create Product Handler
 	const createProductHandler = () => {
@@ -30,9 +37,9 @@ const ProductListScreen = ({ history }) => {
 	};
 
 	//* Product Delete Handler
-	const deleteHandler = (userId) => {
-		if (window.confirm("Are you sure, deleted user can't be reverted")) {
-			//TODO: Delete product
+	const deleteHandler = (productId) => {
+		if (window.confirm("Are you sure, deleted product can't be reverted")) {
+			dispatch(deleteProduct(productId));
 		}
 	};
 
@@ -49,6 +56,8 @@ const ProductListScreen = ({ history }) => {
 				</Col>
 			</Row>
 
+			{loadingDelete && <Loader />}
+			{errorDelete && <Message variant="danger">{errorDelete}</Message>}
 			{loading ? (
 				<Loader></Loader>
 			) : error ? (

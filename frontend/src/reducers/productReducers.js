@@ -21,6 +21,8 @@ const productDetailReducer = (state = { product: { reviews: [] } }, action) => {
 			return { loading: false, product: action.payload };
 		case actionTypes.PRODUCT_DETAIL_FAIL:
 			return { loading: false, error: action.payload };
+		case actionTypes.PRODUCT_DETAIL_RESET:
+			return { product: { reviews: [] } };
 		default:
 			return state;
 	}

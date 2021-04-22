@@ -205,6 +205,44 @@ const deleteUser = (userId) => async (dispatch, getState) => {
 	}
 };
 
+// * Update User  ///////////////
+const updateUser = (user) => async (dispatch, getState) => {
+	try {
+		dispatch({ type: actionTypes.USER_UPDATE_REQUEST });
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+
+		dispatch({
+			type: actionTypes.USER_UPDATE_SUCCESS,
+			payload: data,
+		});
+
+		dispatch({
+			type: actionTypes.USER_DETAILS_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: actionTypes.USER_UPDATE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
 export {
 	loginUser,
 	userLogout,
@@ -213,4 +251,5 @@ export {
 	updateUserProfile,
 	listAllUsers,
 	deleteUser,
+	updateUser,
 };

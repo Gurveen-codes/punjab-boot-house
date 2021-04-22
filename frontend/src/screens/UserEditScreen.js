@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { getUserDetails } from "../actions/userActions";
+import { getUserDetails, updateUser } from "../actions/userActions";
+import { USER_UPDATE_RESET } from "../constants/actionTypes";
 
-const UserEditScreen = ({ match }) => {
+const UserEditScreen = ({ match, history }) => {
 	const userId = match.params.id;
 
 	const [name, setName] = useState("");
@@ -16,21 +17,37 @@ const UserEditScreen = ({ match }) => {
 
 	const dispatch = useDispatch();
 
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
 	const userDetails = useSelector((state) => state.userDetails);
 	const { loading, error, user } = userDetails;
 
+	const userUpdate = useSelector((state) => state.userUpdate);
+	const {
+		loading: loadingUpdate,
+		error: errorUpdate,
+		success: successUpdate,
+	} = userUpdate;
+
 	useEffect(() => {
-		if (!user.name || user._id !== userId) {
-			dispatch(getUserDetails(userId));
+		if (successUpdate) {
+			dispatch({ type: USER_UPDATE_RESET });
+			history.push("/admin/userlist");
 		} else {
-			setName(user.name);
-			setEmail(user.email);
-			setIsAdmin(user.isAdmin);
+			if (!user.name || user._id !== userId) {
+				dispatch(getUserDetails(userId));
+			} else {
+				setName(user.name);
+				setEmail(user.email);
+				setIsAdmin(user.isAdmin);
+			}
 		}
-	}, [dispatch, userId, user]);
+	}, [dispatch, userId, user, history, successUpdate]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		dispatch(updateUser({ _id: userId, name, email, isAdmin }));
 	};
 
 	return (
@@ -40,7 +57,8 @@ const UserEditScreen = ({ match }) => {
 			</Link>
 			<FormContainer>
 				<h1>Edit User</h1>
-
+				{loadingUpdate && <Loader></Loader>}
+				{errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
 				{error && <Message variant="danger">{error}</Message>}
 				{loading && <Loader></Loader>}
 				<Form onSubmit={submitHandler}>
@@ -64,17 +82,19 @@ const UserEditScreen = ({ match }) => {
 						></Form.Control>
 					</Form.Group>
 
-					<Form.Group controlId="isadmin">
-						<Form.Check
-							type="checkbox"
-							checked={isAdmin}
-							onChange={(e) => setIsAdmin(e.target.checked)}
-							label="Make Admin"
-						></Form.Check>
-					</Form.Group>
+					{userId !== userInfo._id && (
+						<Form.Group controlId="isadmin">
+							<Form.Check
+								type="checkbox"
+								checked={isAdmin}
+								onChange={(e) => setIsAdmin(e.target.checked)}
+								label="Make Admin"
+							></Form.Check>
+						</Form.Group>
+					)}
 
 					<Button type="submit" variant="primary">
-						Register
+						Update
 					</Button>
 				</Form>
 			</FormContainer>

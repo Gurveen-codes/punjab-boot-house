@@ -86,6 +86,25 @@ const userDeleteReducer = (state = {}, action) => {
 	}
 };
 
+const userUpdateReducer = (state = { user: {} }, action) => {
+	switch (action.type) {
+		case actionTypes.USER_UPDATE_REQUEST:
+			return { loading: true };
+		case actionTypes.USER_UPDATE_SUCCESS:
+			return {
+				loading: false,
+				success: true,
+				user: action.payload,
+			};
+		case actionTypes.USER_UPDATE_FAIL:
+			return { loading: false, error: action.payload };
+		case actionTypes.USER_UPDATE_RESET:
+			return { user: {} };
+		default:
+			return state;
+	}
+};
+
 export {
 	userLoginReducer,
 	userRegisterReducer,
@@ -93,4 +112,5 @@ export {
 	userUpdateProfileReducer,
 	userListReducer,
 	userDeleteReducer,
+	userUpdateReducer,
 };

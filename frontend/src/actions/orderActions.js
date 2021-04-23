@@ -1,6 +1,7 @@
 import * as actionTypes from "../constants/actionTypes";
 import axios from "axios";
 
+//*Create new order /////////////////////////////////////
 const createOrder = (order) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: actionTypes.ORDER_DETAILS_REQUEST });
@@ -36,7 +37,6 @@ const createOrder = (order) => async (dispatch, getState) => {
 };
 
 //* Get order details /////////////////////////////////////
-
 const getOrderDetails = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: actionTypes.ORDER_DETAILS_REQUEST });
@@ -69,7 +69,6 @@ const getOrderDetails = (id) => async (dispatch, getState) => {
 };
 
 //* Pay Order /////////////////////////////////////
-
 const payOrder = (orderId, paymentResult) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: actionTypes.ORDER_PAY_REQUEST });
@@ -107,7 +106,6 @@ const payOrder = (orderId, paymentResult) => async (dispatch, getState) => {
 };
 
 //* List my orders /////////////////////////////////////
-
 const listMyOrders = () => async (dispatch, getState) => {
 	try {
 		dispatch({ type: actionTypes.MY_ORDER_LIST_REQUEST });

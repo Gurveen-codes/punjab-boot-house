@@ -17,6 +17,9 @@ connectDB();
 
 app.use(express.json()); ///Accept json data in req body
 
+const __dirname = path.resolve();
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+
 app.get("/", (req, res) => {
 	res.send("Backend API is running");
 });
@@ -29,9 +32,6 @@ app.use("/api/upload", uploadRoutes);
 app.get("/api/paypal/config", (req, res) =>
 	res.send(process.env.PAYPAL_CLIENT_ID)
 );
-
-const __dirname = path.resolve();
-app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 app.use(notFound);
 app.use(errorHandler);

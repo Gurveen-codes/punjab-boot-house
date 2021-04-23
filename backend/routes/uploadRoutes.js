@@ -6,10 +6,10 @@ import { isAdmin, protectRoute } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 const storage = multer.diskStorage({
-	destination(req, file, cb) {
+	destination: function (req, file, cb) {
 		cb(null, "uploads/");
 	},
-	filename(req, file, cb) {
+	filename: function (req, file, cb) {
 		cb(
 			null,
 			`${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
@@ -18,25 +18,23 @@ const storage = multer.diskStorage({
 });
 
 function checkFileType(file, cb) {
-	const fileTypes = /jpg|jpeg|png/;
-	const extName = fileTypes.test(path.extname(file.extname).toLowerCase());
-	const mimeType = fileTypes.test(file.mimeType);
+	const filetypes = /jpg|jpeg|png/;
+	const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+	const mimetype = filetypes.test(file.mimetype);
 
-	if (extName && mimeType) {
-		return cb(null, true);
-	} else {
-		cb("Images Only");
+	if (!extname && !mimetype) {
+		return cb(new Error("Only image upload is allowed!"), false);
 	}
+	cb(null, true);
 }
-
 const upload = multer({
 	storage,
-	fileFilter(req, file, cb) {
+	fileFilter: function (req, file, cb) {
 		checkFileType(file, cb);
 	},
 });
 
-router.post("/", protectRoute, isAdmin, upload.single("image"), (req, res) => {
+router.route("/").post(upload.single("image"), (req, res) => {
 	res.send(`/${req.file.path}`);
 });
 

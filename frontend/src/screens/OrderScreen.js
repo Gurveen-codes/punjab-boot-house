@@ -13,7 +13,7 @@ import {
 } from "../actions/orderActions";
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/actionTypes";
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
 	// Get orderID from route params
 	const orderId = match.params.id;
 
@@ -54,6 +54,10 @@ const OrderScreen = ({ match }) => {
 	}
 
 	useEffect(() => {
+		if (!userInfo) {
+			history.push("/login");
+		}
+
 		//* Dynamically add script for payPal sdk
 		const addPaypalScript = async () => {
 			const { data: clientId } = await axios.get("/api/paypal/config");
@@ -81,7 +85,7 @@ const OrderScreen = ({ match }) => {
 				setSdkReady(true);
 			}
 		}
-	}, [order, orderId, dispatch, successPay, successDeliver]);
+	}, [history, userInfo, order, orderId, dispatch, successPay, successDeliver]);
 
 	// Payment Success Handler
 	const paymentSuccessHandler = (paymentResult) => {
@@ -219,7 +223,7 @@ const OrderScreen = ({ match }) => {
 							)}
 
 							{loadingDeliver && <Loader />}
-							{userInfo.isAdmin && !order.isDelivered && (
+							{userInfo?.isAdmin && order.isPaid && !order.isDelivered && (
 								<ListGroup.Item>
 									<Button
 										type="button"

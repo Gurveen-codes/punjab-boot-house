@@ -1,11 +1,12 @@
 import express from "express";
 import {
 	addNewOrder,
+	getAllOrders,
 	getOrderById,
 	getUserOrders,
 	updateOrderToPaid,
 } from "../controllers/orderController.js";
-import { protectRoute } from "../middleware/authMiddleware.js";
+import { protectRoute, isAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -13,6 +14,11 @@ const router = express.Router();
 // @route POST /api/order
 // @access Private
 router.route("/").post(protectRoute, addNewOrder);
+
+// @desc Get all orders
+// @route GET api/order
+// @access Private/Admin
+router.route("/").get(protectRoute, isAdmin, getAllOrders);
 
 // @desc Get logged in user orders
 // @route GET api/order/myorders

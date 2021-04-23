@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import {
 	createProduct,
+	createProductReview,
 	deleteProduct,
 	getProductById,
 	getProducts,
@@ -33,5 +34,10 @@ router.route("/:id").delete(protectRoute, isAdmin, deleteProduct);
 // @route PUT /api/products/:id
 // @access Private/Admin
 router.route("/:id").put(protectRoute, isAdmin, updateProduct);
+
+// @desc Create new review
+// @route POST /api/products/:id/reviews
+// @access Private
+router.route("/:id/reviews").post(protectRoute, createProductReview);
 
 export default router;

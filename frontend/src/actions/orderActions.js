@@ -105,6 +105,42 @@ const payOrder = (orderId, paymentResult) => async (dispatch, getState) => {
 	}
 };
 
+//* Deliver Order /////////////////////////////////////
+const deliverOrder = (order) => async (dispatch, getState) => {
+	try {
+		dispatch({ type: actionTypes.ORDER_DELIVER_REQUEST });
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.put(
+			`/api/order/${order._id}/deliver`,
+			{},
+			config
+		);
+
+		dispatch({
+			type: actionTypes.ORDER_DELIVER_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: actionTypes.ORDER_DELIVER_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
 //* List my orders /////////////////////////////////////
 const listMyOrders = () => async (dispatch, getState) => {
 	try {
@@ -169,4 +205,11 @@ const listAllOrders = () => async (dispatch, getState) => {
 	}
 };
 
-export { createOrder, getOrderDetails, payOrder, listMyOrders, listAllOrders };
+export {
+	createOrder,
+	getOrderDetails,
+	payOrder,
+	listMyOrders,
+	listAllOrders,
+	deliverOrder,
+};

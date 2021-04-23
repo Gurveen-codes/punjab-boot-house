@@ -1,4 +1,4 @@
-import * as actionTypes from "../constants/actionTypes";
+import * as actionTypes from "../constants/orderConstants";
 import axios from "axios";
 
 //*Create new order /////////////////////////////////////

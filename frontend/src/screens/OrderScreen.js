@@ -11,7 +11,10 @@ import {
 	payOrder,
 	deliverOrder,
 } from "../actions/orderActions";
-import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/actionTypes";
+import {
+	ORDER_PAY_RESET,
+	ORDER_DELIVER_RESET,
+} from "../constants/orderConstants";
 
 const OrderScreen = ({ match, history }) => {
 	// Get orderID from route params

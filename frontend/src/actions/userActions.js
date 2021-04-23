@@ -1,5 +1,6 @@
 import axios from "axios";
-import * as actionTypes from "../constants/actionTypes.js";
+import * as actionTypes from "../constants/userConstants";
+import { MY_ORDER_LIST_RESET } from "../constants/orderConstants";
 
 // * Login User/////////////
 const loginUser = (email, password) => async (dispatch) => {
@@ -39,7 +40,7 @@ const userLogout = () => (dispatch) => {
 		type: actionTypes.USER_LOGOUT,
 	});
 	dispatch({
-		type: actionTypes.MY_ORDER_LIST_RESET,
+		type: MY_ORDER_LIST_RESET,
 	});
 	dispatch({
 		type: actionTypes.USER_DETAILS_RESET,

@@ -1,5 +1,5 @@
 import axios from "axios";
-import * as actionTypes from "../constants/actionTypes.js";
+import * as actionTypes from "../constants/productConstants";
 
 //* Get All Products
 const listProducts = () => async (dispatch) => {

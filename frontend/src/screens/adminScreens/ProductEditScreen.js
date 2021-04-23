@@ -10,7 +10,7 @@ import { listDetailProduct, updateProduct } from "../../actions/productActions";
 import {
 	PRODUCT_UPDATE_RESET,
 	PRODUCT_DETAIL_RESET,
-} from "../../constants/actionTypes";
+} from "../../constants/productConstants";
 
 const ProductEditScreen = ({ match, history }) => {
 	const productId = match.params.id;

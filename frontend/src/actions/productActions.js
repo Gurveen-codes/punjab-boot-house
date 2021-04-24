@@ -2,13 +2,18 @@ import axios from "axios";
 import * as actionTypes from "../constants/productConstants";
 
 //* Get All Products
-const listProducts = (keyword = "") => async (dispatch) => {
+const listProducts = (keyword = "", pageNumber = "") => async (dispatch) => {
 	try {
 		dispatch({ type: actionTypes.PRODUCT_LIST_REQUEST });
 
-		const { data } = await axios.get(`/api/products?keyword=${keyword}`);
+		const { data } = await axios.get(
+			`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+		);
 
-		dispatch({ type: actionTypes.PRODUCT_LIST_SUCCESS, payload: data });
+		dispatch({
+			type: actionTypes.PRODUCT_LIST_SUCCESS,
+			payload: data,
+		});
 	} catch (error) {
 		dispatch({
 			type: actionTypes.PRODUCT_LIST_FAIL,

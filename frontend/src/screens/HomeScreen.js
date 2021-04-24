@@ -12,7 +12,7 @@ import { listProducts } from "../actions/productActions";
 const HomeScreen = ({ match }) => {
 	const keyword = match.params.keyword;
 
-	const pageNumber = match.params.pageNumber || 1;
+	const pageNumber = match.params.pageNumber;
 
 	const dispatch = useDispatch();
 
@@ -25,7 +25,7 @@ const HomeScreen = ({ match }) => {
 
 	return (
 		<>
-			{(!keyword || !pageNumber) && <TopProductsCarousel />}
+			{!keyword && !pageNumber && <TopProductsCarousel />}
 			<h1>Latest Products</h1>
 			{loading ? (
 				<Loader />

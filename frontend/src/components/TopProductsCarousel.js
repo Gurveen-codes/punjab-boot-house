@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Carousel, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Loader from "./Loader";
 import Message from "./Message";
 import { getTopRatedProducts } from "../actions/productActions";
 
@@ -10,15 +9,13 @@ const TopProductsCarousel = () => {
 	const dispatch = useDispatch();
 
 	const productTop = useSelector((state) => state.productTop);
-	const { loading, error, products } = productTop;
+	const { error, products } = productTop;
 
 	useEffect(() => {
 		dispatch(getTopRatedProducts());
 	}, [dispatch]);
 
-	return loading ? (
-		<Loader></Loader>
-	) : error ? (
+	return error ? (
 		<Message variant="danger">{error}</Message>
 	) : (
 		<Carousel pause="hover" className="bg-light">

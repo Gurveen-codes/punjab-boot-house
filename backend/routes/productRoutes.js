@@ -7,6 +7,7 @@ import {
 	getProductById,
 	getProducts,
 	updateProduct,
+	getTopProducts,
 } from "../controllers/productController.js";
 import { isAdmin, protectRoute } from "../middleware/authMiddleware.js";
 
@@ -16,9 +17,14 @@ import { isAdmin, protectRoute } from "../middleware/authMiddleware.js";
 router.route("/").get(getProducts);
 
 // @desc Create a product
-// @route POST /api/products/
+// @route POST /api/products
 // @access Private/Admin
 router.route("/").post(protectRoute, isAdmin, createProduct);
+
+// @desc Get top rated products
+// @route GET /api/products/top
+// @access Public
+router.route("/top").get(getTopProducts);
 
 // @desc Fetch one product
 // @route GET /api/products/:id

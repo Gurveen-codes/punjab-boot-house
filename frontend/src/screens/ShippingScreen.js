@@ -18,6 +18,7 @@ const ShippingScreen = ({ history }) => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+
 		dispatch(saveShippingAddress({ address, city, postalCode }));
 		history.push("/payment");
 	};
@@ -59,7 +60,7 @@ const ShippingScreen = ({ history }) => {
 						></Form.Control>
 					</Form.Group>
 
-					<Button type="submit" variant="primary">
+					<Button type="submit" variant="primary" onClick={submitHandler}>
 						Continue
 					</Button>
 				</FormContainer>

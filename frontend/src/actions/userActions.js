@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "../constants/userConstants";
 import { MY_ORDER_LIST_RESET } from "../constants/orderConstants";
+import { CART_RESET } from "../constants/cartConstants";
 
 // * Login User/////////////
 const loginUser = (email, password) => async (dispatch) => {
@@ -36,8 +37,12 @@ const loginUser = (email, password) => async (dispatch) => {
 // *Logout      //////////////////
 const userLogout = () => (dispatch) => {
 	localStorage.removeItem("userInfo");
+	localStorage.removeItem("cartItems");
 	dispatch({
 		type: actionTypes.USER_LOGOUT,
+	});
+	dispatch({
+		type: CART_RESET,
 	});
 	dispatch({
 		type: MY_ORDER_LIST_RESET,

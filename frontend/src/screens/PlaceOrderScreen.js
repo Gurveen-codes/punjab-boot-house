@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Meta from "../components/Meta";
 import { createOrder } from "../actions/orderActions";
+import { CART_RESET } from "../constants/cartConstants";
 
 const PlaceOrderScreen = ({ history }) => {
 	const dispatch = useDispatch();
@@ -29,9 +30,11 @@ const PlaceOrderScreen = ({ history }) => {
 
 	useEffect(() => {
 		if (success) {
+			dispatch({ type: CART_RESET });
+			localStorage.removeItem("cartItems");
 			history.push(`/order/${order._id}`);
 		}
-	}, [history, success, order]);
+	}, [history, success, order, dispatch]);
 
 	//Place Order Handler
 	const placeOrderHandler = () => {

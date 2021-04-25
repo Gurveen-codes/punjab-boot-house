@@ -4,6 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
+import Meta from "../../components/Meta";
 import FormContainer from "../../components/FormContainer";
 import { getUserDetails, updateUser } from "../../actions/userActions";
 import { USER_UPDATE_RESET } from "../../constants/userConstants";
@@ -52,6 +53,7 @@ const UserEditScreen = ({ match, history }) => {
 
 	return (
 		<>
+			<Meta title="Edit User" />
 			<Link to="/admin/userlist" className="btn btn-dark my-2">
 				Go Back
 			</Link>

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import FormContainer from "../../components/FormContainer";
+import Meta from "../../components/Meta";
 import { listDetailProduct, updateProduct } from "../../actions/productActions";
 import {
 	PRODUCT_UPDATE_RESET,
@@ -105,6 +106,7 @@ const ProductEditScreen = ({ match, history }) => {
 
 	return (
 		<>
+			<Meta title="Edit Product | Admin" />
 			<Link to="/admin/productlist" className="btn btn-dark my-2">
 				Go Back
 			</Link>

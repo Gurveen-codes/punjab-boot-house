@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { PayPalButton } from "react-paypal-button-v2";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import Meta from "../components/Meta";
 import {
 	getOrderDetails,
 	payOrder,
@@ -107,6 +108,7 @@ const OrderScreen = ({ match, history }) => {
 		<Message variant="danger">{error}</Message>
 	) : (
 		<>
+			<Meta title={`Order ${order._id}`} />
 			<h1>Order {order._id}</h1>
 			<Row>
 				<Col md={8}>

@@ -4,6 +4,7 @@ import { Row, Col, ListGroup, Card, Image, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
+import Meta from "../components/Meta";
 import { createOrder } from "../actions/orderActions";
 
 const PlaceOrderScreen = ({ history }) => {
@@ -47,6 +48,7 @@ const PlaceOrderScreen = ({ history }) => {
 	};
 	return (
 		<>
+			<Meta title="Place Order" />
 			<CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
 			<Row>
 				<Col md={8}>

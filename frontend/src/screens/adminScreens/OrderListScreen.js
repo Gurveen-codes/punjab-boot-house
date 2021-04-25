@@ -4,6 +4,7 @@ import { Button, Table } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
+import Meta from "../../components/Meta";
 import { listAllOrders } from "../../actions/orderActions";
 
 const OrderListScreen = ({ history }) => {
@@ -26,6 +27,7 @@ const OrderListScreen = ({ history }) => {
 
 	return (
 		<>
+			<Meta title="Orders List" />
 			<h2>Orders</h2>
 			{loading ? (
 				<Loader></Loader>

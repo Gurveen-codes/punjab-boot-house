@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Meta from "../components/Meta";
-import { createOrder } from "../actions/orderActions";
+import { createOrder, listMyOrders } from "../actions/orderActions";
 import { CART_RESET } from "../constants/cartConstants";
 
 const PlaceOrderScreen = ({ history }) => {
@@ -32,6 +32,7 @@ const PlaceOrderScreen = ({ history }) => {
 		if (success) {
 			dispatch({ type: CART_RESET });
 			localStorage.removeItem("cartItems");
+			dispatch(listMyOrders());
 			history.push(`/order/${order._id}`);
 		}
 	}, [history, success, order, dispatch]);

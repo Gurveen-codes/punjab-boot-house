@@ -30,6 +30,9 @@ const ProfileScreen = (props) => {
 	const myOrdersList = useSelector((state) => state.myOrdersList);
 	const { loading: loadingOrders, error: errorOrders, orders } = myOrdersList;
 
+	// const orderCreate = useSelector((state) => state.orderCreate);
+	// const { success: successOrderCreate } = orderCreate;
+
 	useEffect(() => {
 		if (!userInfo) {
 			props.history.push("/login");

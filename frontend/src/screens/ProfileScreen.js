@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Form, Button, Row, Col, Table } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import Meta from "../components/Meta";
@@ -9,6 +11,7 @@ import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
+toast.configure();
 const ProfileScreen = (props) => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
@@ -30,14 +33,17 @@ const ProfileScreen = (props) => {
 	const myOrdersList = useSelector((state) => state.myOrdersList);
 	const { loading: loadingOrders, error: errorOrders, orders } = myOrdersList;
 
-	// const orderCreate = useSelector((state) => state.orderCreate);
-	// const { success: successOrderCreate } = orderCreate;
-
 	useEffect(() => {
 		if (!userInfo) {
 			props.history.push("/login");
 		} else {
 			if (!user || !user.name || success) {
+				if (success) {
+					toast.dark("Profile Updated!", {
+						position: toast.POSITION.TOP_CENTER,
+						autoClose: 3000,
+					});
+				}
 				dispatch({ type: USER_UPDATE_PROFILE_RESET });
 				dispatch(getUserDetails("profile"));
 				dispatch(listMyOrders());

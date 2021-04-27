@@ -10,6 +10,7 @@ import {
 	ListGroup,
 	Form,
 } from "react-bootstrap";
+import ReactStars from "react-rating-stars-component";
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -183,18 +184,16 @@ const ProductScreen = ({ match, history }) => {
 										<Form onSubmit={productReviewHandler}>
 											<Form.Group controlId="rating">
 												<Form.Label>Rating</Form.Label>
-												<Form.Control
-													as="select"
-													value={rating}
-													onChange={(e) => setRating(e.target.value)}
-												>
-													<option value="">Select..</option>
-													<option value="1">1 - Poor</option>
-													<option value="2">2 - Fair</option>
-													<option value="3">3 - Good</option>
-													<option value="4">4 - Very Good</option>
-													<option value="5">5 - Excellent</option>
-												</Form.Control>
+												<ReactStars
+													count={5}
+													onChange={(newRating) => setRating(newRating)}
+													size={28}
+													activeColor="#f8e825"
+													isHalf={true}
+													emptyIcon={<i className="far fa-star"></i>}
+													halfIcon={<i className="fas fa-star-half-alt"></i>}
+													fullIcon={<i className="fas fa-star"></i>}
+												/>
 											</Form.Group>
 											<Form.Group controlId="comment">
 												<Form.Label>Comment</Form.Label>

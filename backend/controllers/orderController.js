@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-
 import Order from "../models/orderModel.js";
 
 // @desc Add new Order
@@ -77,6 +76,25 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Temp Update order to paid
+// @route PUT api/order/:id/temppay
+// @access Private/Admin
+const tempUpdateOrderToPaid = asyncHandler(async (req, res) => {
+	const order = await Order.findById(req.params.id);
+
+	if (order) {
+		order.isPaid = true;
+		order.paidAt = Date.now();
+
+		const updatedOrder = await order.save();
+
+		res.json(updatedOrder);
+	} else {
+		res.status(400);
+		throw new Error("Order not found");
+	}
+});
+
 // @desc Update order to delivered
 // @route PUT api/order/:id/deliver
 // @access Private/Admin
@@ -121,4 +139,5 @@ export {
 	updateOrderToDelivered,
 	getUserOrders,
 	getAllOrders,
+	tempUpdateOrderToPaid,
 };

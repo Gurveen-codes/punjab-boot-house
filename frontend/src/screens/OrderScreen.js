@@ -11,9 +11,11 @@ import {
 	getOrderDetails,
 	payOrder,
 	deliverOrder,
+	tempPayOrder,
 } from "../actions/orderActions";
 import {
 	ORDER_PAY_RESET,
+	ORDER_TEMP_PAY_RESET,
 	ORDER_DELIVER_RESET,
 } from "../constants/orderConstants";
 
@@ -40,6 +42,10 @@ const OrderScreen = ({ match, history }) => {
 	// Order deliver chunk of state
 	const orderDeliver = useSelector((state) => state.orderDeliver);
 	const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+	// Temp Order pay chunk of state
+	const tempOrderPay = useSelector((state) => state.tempOrderPay);
+	const { success: successTempPay } = tempOrderPay;
 
 	// Method to add decimals to given input
 	const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2);
@@ -77,8 +83,15 @@ const OrderScreen = ({ match, history }) => {
 			document.body.appendChild(script);
 		};
 
-		if (!order || order._id !== orderId || successPay || successDeliver) {
+		if (
+			!order ||
+			order._id !== orderId ||
+			successPay ||
+			successDeliver ||
+			successTempPay
+		) {
 			dispatch({ type: ORDER_PAY_RESET });
+			dispatch({ type: ORDER_TEMP_PAY_RESET });
 			dispatch({ type: ORDER_DELIVER_RESET });
 
 			dispatch(getOrderDetails(orderId));
@@ -89,11 +102,25 @@ const OrderScreen = ({ match, history }) => {
 				setSdkReady(true);
 			}
 		}
-	}, [history, userInfo, order, orderId, dispatch, successPay, successDeliver]);
+	}, [
+		history,
+		userInfo,
+		order,
+		orderId,
+		dispatch,
+		successPay,
+		successDeliver,
+		successTempPay,
+	]);
 
 	// Payment Success Handler
 	const paymentSuccessHandler = (paymentResult) => {
 		dispatch(payOrder(orderId, paymentResult));
+	};
+
+	// Temp Payment Success Handler
+	const tempPaymentHandler = () => {
+		dispatch(tempPayOrder(orderId));
 	};
 
 	// Deliver Handler
@@ -176,7 +203,7 @@ const OrderScreen = ({ match, history }) => {
 													</Link>
 												</Col>
 												<Col md={4}>
-													{item.qty} x {item.price} = $
+													{item.qty} x {item.price} = Rs.{" "}
 													{addDecimals(item.qty * item.price)}
 												</Col>
 											</Row>
@@ -197,19 +224,19 @@ const OrderScreen = ({ match, history }) => {
 							<ListGroup.Item>
 								<Row>
 									<Col>Items</Col>
-									<Col>${order.itemsPrice}</Col>
+									<Col>Rs. {order.itemsPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>Shipping</Col>
-									<Col>${order.shippingPrice}</Col>
+									<Col>Rs. {order.shippingPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>Total</Col>
-									<Col>${order.totalPrice}</Col>
+									<Col>Rs. {order.totalPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							{!order.isPaid && (
@@ -228,6 +255,18 @@ const OrderScreen = ({ match, history }) => {
 							)}
 
 							{loadingDeliver && <Loader />}
+							{/* Temp Payment Button */}
+							{userInfo && userInfo.isAdmin && !order.isPaid && (
+								<ListGroup.Item>
+									<Button
+										type="button"
+										className="btn btn-block btn-warning"
+										onClick={tempPaymentHandler}
+									>
+										Mark as Paid
+									</Button>
+								</ListGroup.Item>
+							)}
 							{userInfo &&
 								userInfo.isAdmin &&
 								order.isPaid &&

@@ -105,6 +105,42 @@ const payOrder = (orderId, paymentResult) => async (dispatch, getState) => {
 	}
 };
 
+//* Temp Pay Order /////////////////////////////////////
+const tempPayOrder = (orderId) => async (dispatch, getState) => {
+	try {
+		dispatch({ type: actionTypes.ORDER_TEMP_PAY_REQUEST });
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.put(
+			`/api/order/${orderId}/temppay`,
+			{},
+			config
+		);
+
+		dispatch({
+			type: actionTypes.ORDER_TEMP_PAY_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: actionTypes.ORDER_TEMP_PAY_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
 //* Deliver Order /////////////////////////////////////
 const deliverOrder = (order) => async (dispatch, getState) => {
 	try {
@@ -212,4 +248,5 @@ export {
 	listMyOrders,
 	listAllOrders,
 	deliverOrder,
+	tempPayOrder,
 };

@@ -60,6 +60,27 @@ const orderPayReducer = (state = {}, action) => {
 	}
 };
 
+const tempOrderPayReducer = (state = {}, action) => {
+	switch (action.type) {
+		case actionTypes.ORDER_TEMP_PAY_REQUEST:
+			return { loading: true };
+		case actionTypes.ORDER_TEMP_PAY_SUCCESS:
+			return {
+				loading: false,
+				success: true,
+			};
+		case actionTypes.ORDER_TEMP_PAY_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
+		case actionTypes.ORDER_TEMP_PAY_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
 const orderDeliverReducer = (state = {}, action) => {
 	switch (action.type) {
 		case actionTypes.ORDER_DELIVER_REQUEST:
@@ -132,4 +153,5 @@ export {
 	myOrdersListReducer,
 	orderListReducer,
 	orderDeliverReducer,
+	tempOrderPayReducer,
 };

@@ -4,6 +4,7 @@ import {
 	getAllOrders,
 	getOrderById,
 	getUserOrders,
+	tempUpdateOrderToPaid,
 	updateOrderToDelivered,
 	updateOrderToPaid,
 } from "../controllers/orderController.js";
@@ -35,6 +36,11 @@ router.route("/:id").get(protectRoute, getOrderById);
 // @route PUT api/order/:id/pay
 // @access Private
 router.route("/:id/pay").put(protectRoute, updateOrderToPaid);
+
+// @desc Temp Update order to paid
+// @route PUT api/order/:id/temppay
+// @access Private/Admin
+router.route("/:id/temppay").put(protectRoute, isAdmin, tempUpdateOrderToPaid);
 
 // @desc Update order to delivered
 // @route PUT api/order/:id/deliver

@@ -1,21 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 
 const Loader = () => {
-  return (
-    <Spinner
-      animation="border"
-      role="status"
-      style={{
-        width: "100px",
-        height: "100px",
-        margin: "auto",
-        display: "block",
-      }}
-    >
-      <span className="sr-only">Loading</span>
-    </Spinner>
-  );
+	const [spinnerStyles, setSpinnerStyles] = useState({
+		width: "100px",
+		height: "100px",
+		margin: "auto",
+		display: "block",
+	});
+
+	const [msgHidden, setMsgHidden] = useState(true);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setSpinnerStyles((s) => ({ ...s, width: "50px", height: "50px" }));
+			setMsgHidden(false);
+		}, 100);
+	}, []);
+
+	return (
+		<>
+			<Spinner animation="border" role="status" style={spinnerStyles}>
+				<span className="sr-only">Loading</span>
+			</Spinner>
+			<div
+				className="msgHidden mt-4"
+				style={{ textAlign: "center", visibility: msgHidden && "none" }}
+			>
+				It's taking longer than expected
+			</div>
+		</>
+	);
 };
 
 export default Loader;

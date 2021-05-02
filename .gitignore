@@ -11,6 +11,7 @@ node_modules/
 # testing
 /coverage
 
+
 # production
 /frontend/build
 
@@ -28,3 +29,6 @@ yarn-error.log*
 /frontend/.eslintcache/
 
 issues.txt
+/frontend/public/images
+
+

@@ -15,7 +15,7 @@ const Loader = () => {
 		setTimeout(() => {
 			setSpinnerStyles((s) => ({ ...s, width: "50px", height: "50px" }));
 			setMsgHidden(false);
-		}, 1000);
+		}, 3000);
 	}, []);
 
 	return (
@@ -25,7 +25,7 @@ const Loader = () => {
 			</Spinner>
 			<div
 				className="msgHidden mt-4"
-				style={{ textAlign: "center", visibility: msgHidden && "none" }}
+				style={{ textAlign: "center", visibility: msgHidden && "hidden" }}
 			>
 				It's taking longer than expected
 			</div>

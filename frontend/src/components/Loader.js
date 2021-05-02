@@ -15,7 +15,7 @@ const Loader = () => {
 		setTimeout(() => {
 			setSpinnerStyles((s) => ({ ...s, width: "50px", height: "50px" }));
 			setMsgHidden(false);
-		}, 100);
+		}, 1000);
 	}, []);
 
 	return (
